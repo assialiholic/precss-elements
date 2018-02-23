@@ -4,13 +4,17 @@
 
 // MediaQuaries
 // -------------------------------------------------------------------
-@mixin MQ($breakpoint) {
-  @if map-has-key($mediaQueries, $breakpoint) {
-    @media #{inspect(map-get($mediaQueries, $breakpoint))} {
-      @content;
+@mixin MQ($size) {
+  @if not map-has-key($breakpoints, $size){
+    @warn "`#{$size}` is undefined";
+  }
+
+  @each $key, $val in $breakpoints {
+    @if $key == $size {
+      @media screen and (max-width: #{map-get($breakpoints, $key)}px) {
+        @content;
+      }
     }
-} @else {
-    @warn "`#{$breakpoint}` is undefined";
   }
 }
 

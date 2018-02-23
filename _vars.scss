@@ -14,13 +14,10 @@ $contWidth: $contWidthValue + px;
 //
 //Media-query
 //
-$breakpoint-sm: 576;
-$breakpoint-md: 768;
-$mediaQueries: (
-  's': 'screen and (max-width: #{$breakpoint-sm}px)',
-  'm': 'screen and (max-width: #{$breakpoint-md}px)',
+$breakpoints: (
+  's': 576,
+  'm': 768
 );
-
 
 // Text
 // -------------------------------------------------------------------

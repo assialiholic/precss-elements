@@ -1,3 +1,10 @@
+$bp-md: map-get($breakpoints, m);
+$alsoSm: false;
+@if map-has-key($breakpoints, s) {
+  $alsoSm: true;
+  $bp-sm: map-get($breakpoints, s) !global;
+}
+
 /* Grid Mixins
    ========================================================================== */
 @mixin childCol($col:0, $gutter:0, $mq:true){
@@ -15,10 +22,17 @@
     }
   }
 
-  @if $mq{
-    @include MQ(s){
-      width: 100%;
-      margin-right: 0;
+  @if $mq {
+    @if $alsoSm {
+      @include MQ(s){
+        width: 100%;
+        margin-right: 0;
+      }
+    } @else {
+      @include MQ(m){
+        width: 100%;
+        margin-right: 0;
+      }
     }
   }
 }
@@ -86,76 +100,78 @@
   //
   // 従って標準状態で3つのスクリーンサイズ * 5種類のガター値を標準搭載しており、かつモディファイアの名前や数、ガター値は自由にカスタマイズ可能です。
   //
+  // _vars.scss内breakpointsマップ変数の's'を消去すれば、自動的ブレークポイント1点のグリッドシステムに切り替わります。
+  //
   // -------------------------------------------------------------------
   $gutterValues:(
     xNarrow:(
       l:(
-        h: 20,
-        v: 10
+        h: 20, //example value
+        v: 10 //example value
       ),
       m:(
-        h: 10,
-        v: 5
+        h: 10, //example value
+        v: 5 //example value
       ),
       s:(
-        h: 5,
-        v: 5
+        h: 5, //example value
+        v: 5 //example value
       )
     ),
     narrow:(
       l:(
-        h: 40,
-        v: 30
+        h: 40, //example value
+        v: 30 //example value
       ),
       m:(
-        h: 20,
-        v: 10
+        h: 20, //example value
+        v: 10 //example value
       ),
       s:(
-        h: 10,
-        v: 5
+        h: 10, //example value
+        v: 5 //example value
       )
     ),
     default:(
       l:(
-        h: 60,
-        v: 50
+        h: 60, //example value
+        v: 50 //example value
       ),
       m:(
-        h: 40,
-        v: 30
+        h: 40, //example value
+        v: 30 //example value
       ),
       s:(
-        h: 20,
-        v: 20
+        h: 20, //example value
+        v: 20 //example value
       )
     ),
     wide:(
       l:(
-        h: 80,
-        v: 70
+        h: 80, //example value
+        v: 70 //example value
       ),
       m:(
-        h: 60,
-        v: 50
+        h: 60, //example value
+        v: 50 //example value
       ),
       s:(
-        h: 30,
-        v: 20
+        h: 30, //example value
+        v: 20 //example value
       )
     ),
     xWide:(
       l:(
-        h: 100,
-        v: 90
+        h: 100, //example value
+        v: 90 //example value
       ),
       m:(
-        h: 80,
-        v: 70
+        h: 80, //example value
+        v: 70 //example value
       ),
       s:(
-        h: 40,
-        v: 30
+        h: 40, //example value
+        v: 30 //example value
       )
     )
   );
@@ -197,8 +213,10 @@
   // -------------------------------------------------------------------
   @if $horizPercentageGutter{
     $horizLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), l), h)) !global;
-    $horizMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), h), $breakpoint-md) !global;
-    $horizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), h), $breakpoint-sm) !global;
+    $horizMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), h), $bp-md) !global;
+    @if $alsoSm {
+      $horizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), h), $bp-sm) !global;
+    }
   } @else {
     $horizLgGtr: map-get(map-get(map-get($gutterValues, default), l), h) !global;
     $horizMdGtr: map-get(map-get(map-get($gutterValues, default), m), h) !global;
@@ -206,8 +224,10 @@
   }
   @if $vertPercentageGutter{
     $vertLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), l), v)) !global;
-    $vertMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), v), $breakpoint-md) !global;
-    $vertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), v), $breakpoint-sm) !global;
+    $vertMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), v), $bp-md) !global;
+    @if $alsoSm {
+      $vertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), v), $bp-sm) !global;
+    }
   } @else {
     $vertLgGtr: map-get(map-get(map-get($gutterValues, default), l), v) !global;
     $vertMdGtr: map-get(map-get(map-get($gutterValues, default), m), v) !global;
@@ -217,7 +237,11 @@
 
   // 独自mixin
   // -------------------------------------------------------------------
-  @mixin column-mq-loop($horizLgGtr, $horizSmGtr){
+  @mixin columnMqLoop($data){
+    $horizLgGtr: map-get($data, horizLgGtr);
+    $horizMdGtr: map-get($data, horizMdGtr);
+    $horizSmGtr: map-get($data, horizSmGtr);
+
     @for $i from 2 through $maxColumnNum{
       &#{$wrp}__col#{$i}{
         .gr_col{
@@ -232,30 +256,35 @@
                 margin-right: addPxUnit($horizMdGtr);
               }
             }
-            @include MQ(s){
-              .gr_col{
-                width: 100%;
-                margin-right: 0;
-              }
-            }
 
-            @for $k from 2 through $maxColumnNum{
-              &#{$wrp}__smCol#{$k}{
-                @include MQ(s){
-                  .gr_col{
-                    @include childCol($k, $horizSmGtr, false);
-                    margin-right: addPxUnit($horizSmGtr);
+            @if $alsoSm {
+              @include MQ(s){
+                .gr_col{
+                  width: 100%;
+                  margin-right: 0;
+                }
+              }
+
+              @for $k from 2 through $maxColumnNum {
+                &#{$wrp}__smCol#{$k} {
+                  @include MQ(s) {
+                    .gr_col {
+                      @include childCol($k, $horizSmGtr, false);
+                      margin-right: addPxUnit($horizSmGtr);
+                    }
                   }
                 }
               }
             }
           }
 
-          &#{$wrp}__smCol#{$j}{
-            @include MQ(s){
-              .gr_col{
-                @include childCol($j, $horizSmGtr, false);
-                margin-right: addPxUnit($horizSmGtr);
+          @if $alsoSm {
+            &#{$wrp}__smCol#{$j} {
+              @include MQ(s) {
+                .gr_col {
+                  @include childCol($j, $horizSmGtr, false);
+                  margin-right: addPxUnit($horizSmGtr);
+                }
               }
             }
           }
@@ -264,17 +293,21 @@
     }
   }
 
-  @mixin gr_col($vertLgGtr, $horizLgGtr, $vertSmGtr, $horizSmGtr){
+  @mixin grCol($data){
     .gr_col{
-      margin-top: addPxUnit($vertLgGtr);
-      margin-right: addPxUnit($horizLgGtr);
+      margin-top: addPxUnit(map_get($data, vertLgGtr));
+      margin-right: addPxUnit(map_get($data, horizLgGtr));
+
       @include MQ(m){
-        margin-top: addPxUnit($vertMdGtr);
-        margin-right: addPxUnit($horizMdGtr);
+        margin-top: addPxUnit(map_get($data, vertMdGtr));
+        margin-right: addPxUnit(map_get($data, horizMdGtr));
       }
-      @include MQ(s){
-        margin-top: addPxUnit($vertSmGtr);
-        margin-right: addPxUnit($horizSmGtr);
+
+      @if $alsoSm {
+        @include MQ(s) {
+          margin-top: addPxUnit(map_get($data, vertSmGtr));
+          margin-right: addPxUnit(map_get($data, horizSmGtr));
+        }
       }
     }
   }
@@ -286,8 +319,11 @@
   @include MQ(m){
     margin-top: -#{addPxUnit($vertMdGtr)};
   }
-  @include MQ(s){
-    margin-top: -#{addPxUnit($vertSmGtr)};
+
+  @if $alsoSm {
+    @include MQ(s) {
+      margin-top: -#{addPxUnit($vertSmGtr)};
+    }
   }
 
   @if $layoutStyle == 'float' {
@@ -300,9 +336,25 @@
     @include flex();
   }
 
-  @include gr_col($vertLgGtr, $horizLgGtr, $vertSmGtr, $horizSmGtr);
-  @include column-mq-loop($horizLgGtr, $horizSmGtr);
-
+  @if $alsoSm {
+    $gtrMap: (
+      'vertLgGtr': $vertLgGtr,
+      'horizLgGtr': $horizLgGtr,
+      'vertMdGtr': $vertMdGtr,
+      'horizMdGtr': $horizMdGtr,
+      'vertSmGtr': $vertSmGtr,
+      'horizSmGtr': $horizSmGtr
+    ) !global;
+  } @else {
+    $gtrMap: (
+      'vertLgGtr': $vertLgGtr,
+      'horizLgGtr': $horizLgGtr,
+      'vertMdGtr': $vertMdGtr,
+      'horizMdGtr': $horizMdGtr
+    ) !global;
+  }
+  @include grCol($gtrMap);
+  @include columnMqLoop($gtrMap);
 
   // default以外のgutterのモディファイア実装
   // -------------------------------------------------------------------
@@ -310,27 +362,62 @@
     @if $size != 'default'{
       @if $horizPercentageGutter{
         $thisHorizLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), h)) !global;
-        $thisHorizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), h), $breakpoint-sm) !global;
+        $thisHorizMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), m), h)) !global;
+        @if $alsoSm {
+          $thisHorizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), h), $bp-sm) !global;
+        }
       } @else {
         $thisHorizLgGtr: map-get(map-get(map-get($gutterValues, #{$size}), l), h) !global;
-        $thisHorizSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), h) !global;
+        $thisHorizMdGtr: map-get(map-get(map-get($gutterValues, #{$size}), m), h) !global;
+        @if $alsoSm {
+          $thisHorizSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), h) !global;
+        }
       }
       @if $vertPercentageGutter{
         $thisVertLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), v)) !global;
-        $thisVertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), v), $breakpoint-sm) !global;
+        $thisVertMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), m), v)) !global;
+        @if $alsoSm {
+          $thisVertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), v), $bp-sm) !global;
+        }
       } @else {
         $thisVertLgGtr: map-get(map-get(map-get($gutterValues, #{$size}), l), v) !global;
-        $thisVertSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), v) !global;
+        $thisVertMdGtr: map-get(map-get(map-get($gutterValues, #{$size}), m), v) !global;
+        @if $alsoSm {
+          $thisVertSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), v) !global;
+        }
       }
 
       &#{$wrp}__#{$size}{
         margin-top: -#{addPxUnit($thisVertLgGtr)};
-        @include MQ(s){
-          margin-top: -#{addPxUnit($thisVertSmGtr)};
+        @include MQ(m){
+          margin-top: -#{addPxUnit($thisVertMdGtr)};
+        }
+        @if $alsoSm {
+          @include MQ(s){
+            margin-top: -#{addPxUnit($thisVertSmGtr)};
+          }
         }
 
-        @include gr_col($thisVertLgGtr, $thisHorizLgGtr, $thisVertSmGtr, $thisHorizSmGtr);
-        @include column-mq-loop($thisHorizLgGtr, $thisHorizSmGtr);
+        @if $alsoSm {
+          $thisGtrMap: (
+            'vertLgGtr': $thisVertLgGtr,
+            'horizLgGtr': $thisHorizLgGtr,
+            'vertMdGtr': $thisVertMdGtr,
+            'horizMdGtr': $thisHorizMdGtr,
+            'vertSmGtr': $thisVertSmGtr,
+            'horizSmGtr': $thisHorizSmGtr
+          ) !global;
+        } @else {
+          $thisGtrMap: (
+            'vertLgGtr': $thisVertLgGtr,
+            'horizLgGtr': $thisHorizLgGtr,
+            'vertMdGtr': $thisVertMdGtr,
+            'horizMdGtr': $thisHorizMdGtr
+          ) !global;
+        }
+
+        @include grCol($thisGtrMap);
+        @include columnMqLoop($thisGtrMap);
       }
     }
   }
