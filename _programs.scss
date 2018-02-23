@@ -1,0 +1,7 @@
+.js_pageTop {
+  display: none;
+
+  &.is_active {
+    display: block;
+  }
+}

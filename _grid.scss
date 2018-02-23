@@ -1,0 +1,356 @@
+/* Grid Mixins
+   ========================================================================== */
+@mixin childCol($col:0, $gutter:0, $mq:true){
+  $width: (100/$col);
+  @if unit($gutter) == '%'{
+    width: roundDecimal(($width - ($gutter * ($col - 1) / $col)), 3);
+    &:nth-of-type(#{$col}n){
+      margin-right: 0;
+    }
+  } @else {
+    $magicNumber: $gutter * ($col - 1) / $col;
+    width: calc(#{$width}% - #{addPxUnit($magicNumber)});
+    &:nth-of-type(#{$col}n){
+      margin-right: 0;
+    }
+  }
+
+  @if $mq{
+    @include MQ(s){
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+}
+
+@mixin chilidCol__inline($display, $clearFloat:false){
+  display: block;
+  letter-spacing: -.55rem;
+  text-align: left;
+
+  .gr_col{
+    @if $clearFloat{
+      float: none;
+    }
+    display: $display;
+    letter-spacing: normal;
+    vertical-align: top;
+  }
+}
+
+@mixin chilidCol__float(){
+  display: block;
+
+  &::before,
+  &::after {
+    content: ' ';
+    display: table;
+  }
+  &::after {
+    clear: both;
+  }
+
+  .gr_col{
+    float: left;
+    display: block;
+  }
+}
+
+@mixin flex(){
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+  align-items: stretch;
+
+  .gr_col{
+    display: block;
+  }
+}
+
+
+/* Grid System
+   ========================================================================== */
+.gr_wrapper {
+  $wrp: '.gr_wrapper';
+
+  // カスタマイズ可能変数
+  //
+  // それぞれのkeyがモディファイア名となります。
+  // * gr_wrapper__xNarrow
+  // * gr_wrapper__narrow
+  // * gr_wrapper
+  // * gr_wrapper__wide
+  // * gr_wrapper__xWide
+  //
+  // l・m・sはそれぞれのブレークポイントに対応しており、hは横方向のガター値（horizontal）、vは縦方向のガター値（vertical）を表しています。
+  //
+  // 従って標準状態で3つのスクリーンサイズ * 5種類のガター値を標準搭載しており、かつモディファイアの名前や数、ガター値は自由にカスタマイズ可能です。
+  //
+  // -------------------------------------------------------------------
+  $gutterValues:(
+    xNarrow:(
+      l:(
+        h: 20,
+        v: 10
+      ),
+      m:(
+        h: 10,
+        v: 5
+      ),
+      s:(
+        h: 5,
+        v: 5
+      )
+    ),
+    narrow:(
+      l:(
+        h: 40,
+        v: 30
+      ),
+      m:(
+        h: 20,
+        v: 10
+      ),
+      s:(
+        h: 10,
+        v: 5
+      )
+    ),
+    default:(
+      l:(
+        h: 60,
+        v: 50
+      ),
+      m:(
+        h: 40,
+        v: 30
+      ),
+      s:(
+        h: 20,
+        v: 20
+      )
+    ),
+    wide:(
+      l:(
+        h: 80,
+        v: 70
+      ),
+      m:(
+        h: 60,
+        v: 50
+      ),
+      s:(
+        h: 30,
+        v: 20
+      )
+    ),
+    xWide:(
+      l:(
+        h: 100,
+        v: 90
+      ),
+      m:(
+        h: 80,
+        v: 70
+      ),
+      s:(
+        h: 40,
+        v: 30
+      )
+    )
+  );
+
+  // カスタマイズ可能変数
+  //
+  // $horizPercentageGutter・$vertPercentageGutter:
+  //   それぞれガターを%でとるかpx固定値でとるかを制御します。
+  //   残念ながらこの設定はプロジェクト全体で共通となり、モディファイアで一部だけ切り替えることはできません。
+  //   そもそもページによってガターのとり方が変わるなどあり得ないでしょう。
+  //
+  // $maxColumnNum
+  //   最大のカラム数を指定します。上限は特にありませんが、多ければ多いほどCSSの行数も増えます。
+  //   後から増やすことは可能ですが、サイト全体を把握していない限り減らすことは危険です。
+  //
+  // $layoutStyle
+  //   レイアウトに使用するスタイルを指定します。
+  //   これはあくまで標準を指定するためのものであり、いずれを指定しても常に下記のモディファイアで柔軟に上書きすることが可能です。
+  //   * gr_wrapper__float
+  //   * gr_wrapper__inlineTable
+  //   * gr_wrapper__inlineBlock
+  //   * gr_wrapper__flex
+  //
+  // -------------------------------------------------------------------
+
+  $horizPercentageGutter: true;
+  $vertPercentageGutter: false;
+  $maxColumnNum: 6;
+  $layoutStyle: 'inline-table'; //float or inline-table or inline-block or flex(flex is beta)
+
+
+  // -------------------------------------------------------------------
+  //
+  // ※※以下のコードはカスタマイズを想定していません※※
+  //
+  // -------------------------------------------------------------------
+
+  // pxと%の切り替え
+  // -------------------------------------------------------------------
+  @if $horizPercentageGutter{
+    $horizLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), l), h)) !global;
+    $horizMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), h), $breakpoint-md) !global;
+    $horizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), h), $breakpoint-sm) !global;
+  } @else {
+    $horizLgGtr: map-get(map-get(map-get($gutterValues, default), l), h) !global;
+    $horizMdGtr: map-get(map-get(map-get($gutterValues, default), m), h) !global;
+    $horizSmGtr: map-get(map-get(map-get($gutterValues, default), s), h) !global;
+  }
+  @if $vertPercentageGutter{
+    $vertLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), l), v)) !global;
+    $vertMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), v), $breakpoint-md) !global;
+    $vertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), v), $breakpoint-sm) !global;
+  } @else {
+    $vertLgGtr: map-get(map-get(map-get($gutterValues, default), l), v) !global;
+    $vertMdGtr: map-get(map-get(map-get($gutterValues, default), m), v) !global;
+    $vertSmGtr: map-get(map-get(map-get($gutterValues, default), s), v) !global;
+  }
+
+
+  // 独自mixin
+  // -------------------------------------------------------------------
+  @mixin column-mq-loop($horizLgGtr, $horizSmGtr){
+    @for $i from 2 through $maxColumnNum{
+      &#{$wrp}__col#{$i}{
+        .gr_col{
+          @include childCol($i, $horizLgGtr);
+        }
+
+        @for $j from 2 through $maxColumnNum{
+          &#{$wrp}__mdCol#{$j}{
+            @include MQ(m){
+              .gr_col{
+                @include childCol($j, $horizMdGtr, false);
+                margin-right: addPxUnit($horizMdGtr);
+              }
+            }
+            @include MQ(s){
+              .gr_col{
+                width: 100%;
+                margin-right: 0;
+              }
+            }
+
+            @for $k from 2 through $maxColumnNum{
+              &#{$wrp}__smCol#{$k}{
+                @include MQ(s){
+                  .gr_col{
+                    @include childCol($k, $horizSmGtr, false);
+                    margin-right: addPxUnit($horizSmGtr);
+                  }
+                }
+              }
+            }
+          }
+
+          &#{$wrp}__smCol#{$j}{
+            @include MQ(s){
+              .gr_col{
+                @include childCol($j, $horizSmGtr, false);
+                margin-right: addPxUnit($horizSmGtr);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @mixin gr_col($vertLgGtr, $horizLgGtr, $vertSmGtr, $horizSmGtr){
+    .gr_col{
+      margin-top: addPxUnit($vertLgGtr);
+      margin-right: addPxUnit($horizLgGtr);
+      @include MQ(m){
+        margin-top: addPxUnit($vertMdGtr);
+        margin-right: addPxUnit($horizMdGtr);
+      }
+      @include MQ(s){
+        margin-top: addPxUnit($vertSmGtr);
+        margin-right: addPxUnit($horizSmGtr);
+      }
+    }
+  }
+
+
+  // スタイル適用
+  // -------------------------------------------------------------------
+  margin-top: - addPxUnit($vertLgGtr);
+  @include MQ(m){
+    margin-top: -#{addPxUnit($vertMdGtr)};
+  }
+  @include MQ(s){
+    margin-top: -#{addPxUnit($vertSmGtr)};
+  }
+
+  @if $layoutStyle == 'float' {
+    @include chilidCol__float();
+  } @else if $layoutStyle == 'inline-table'{
+    @include chilidCol__inline(inline-table);
+  } @else if $layoutStyle == 'inline-block'{
+    @include chilidCol__inline(inline-block);
+  } @else if $layoutStyle == 'flex'{
+    @include flex();
+  }
+
+  @include gr_col($vertLgGtr, $horizLgGtr, $vertSmGtr, $horizSmGtr);
+  @include column-mq-loop($horizLgGtr, $horizSmGtr);
+
+
+  // default以外のgutterのモディファイア実装
+  // -------------------------------------------------------------------
+  @each $size, $viewports in $gutterValues{
+    @if $size != 'default'{
+      @if $horizPercentageGutter{
+        $thisHorizLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), h)) !global;
+        $thisHorizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), h), $breakpoint-sm) !global;
+      } @else {
+        $thisHorizLgGtr: map-get(map-get(map-get($gutterValues, #{$size}), l), h) !global;
+        $thisHorizSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), h) !global;
+      }
+      @if $vertPercentageGutter{
+        $thisVertLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), v)) !global;
+        $thisVertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), v), $breakpoint-sm) !global;
+      } @else {
+        $thisVertLgGtr: map-get(map-get(map-get($gutterValues, #{$size}), l), v) !global;
+        $thisVertSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), v) !global;
+      }
+
+      &#{$wrp}__#{$size}{
+        margin-top: -#{addPxUnit($thisVertLgGtr)};
+        @include MQ(s){
+          margin-top: -#{addPxUnit($thisVertSmGtr)};
+        }
+
+        @include gr_col($thisVertLgGtr, $thisHorizLgGtr, $thisVertSmGtr, $thisHorizSmGtr);
+        @include column-mq-loop($thisHorizLgGtr, $thisHorizSmGtr);
+      }
+    }
+  }
+
+
+  // display値変更のモディファイア
+  // -------------------------------------------------------------------
+  &#{$wrp}__float{
+    @include chilidCol__float();
+  }
+
+  &#{$wrp}__inlineTable{
+    @include chilidCol__inline(inline-table, true);
+  }
+
+  &#{$wrp}__inlineBlock{
+    @include chilidCol__inline(inline-block, true);
+  }
+
+  &#{$wrp}__flex{
+    @include flex();
+  }
+}

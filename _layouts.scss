@@ -1,0 +1,31 @@
+// Header
+// -------------------------------------------------------------------
+.ly_header {
+  $wrp: '.ly_header';
+  background-color: #aaa;
+
+  &_inner{
+    @include contentCentering();
+    text-align: center;
+  }
+}
+
+
+// Body
+// -------------------------------------------------------------------
+.ly_body {
+  @include contentCentering();
+}
+
+
+// Footer
+// -------------------------------------------------------------------
+.ly_footer {
+  $wrp: '.ly_footer';
+  background-color: #aaa;
+
+  &_inner{
+    @include contentCentering();
+    text-align: center;
+  }
+}

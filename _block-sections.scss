@@ -1,0 +1,10 @@
+.bl_sect {
+  @include lastMB0();
+  padding-top: 80px;
+  padding-bottom: 80px;
+
+  @include MQ(m) {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  }
+}

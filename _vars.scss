@@ -1,0 +1,42 @@
+// -------------------------------------------------------------------
+// Variables
+// -------------------------------------------------------------------
+
+// General
+// -------------------------------------------------------------------
+
+$contSpaceValue: 15;
+$contSpace: $contSpaceValue + px;
+$innerContWidthValue: 1080;
+$contWidthValue: $innerContWidthValue + $contSpaceValue * 2;
+$contWidth: $contWidthValue + px;
+
+//
+//Media-query
+//
+$breakpoint-sm: 576;
+$breakpoint-md: 768;
+$mediaQueries: (
+  's': 'screen and (max-width: #{$breakpoint-sm}px)',
+  'm': 'screen and (max-width: #{$breakpoint-md}px)',
+);
+
+
+// Text
+// -------------------------------------------------------------------
+$fz: 1.6rem;
+$lh: 1.5;
+
+
+// Interaction
+// -------------------------------------------------------------------
+
+//
+//Opacity
+//
+$hoverOpacity: .75;
+
+//
+//Transition
+//
+$transSpeed: .25s;

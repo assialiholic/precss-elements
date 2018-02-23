@@ -1,0 +1,165 @@
+/* display
+========================================================================== */
+.hp_dn{display: none!important;}
+.hp_db{display: block!important;}
+.hp_di{display: inline!important;}
+.hp_dib{display: inline-block!important;}
+.hp_dtb{display: table!important;}
+.hp_ditb{display: inline-table!important;}
+.hp_dtbc{display: table-cell!important;}
+.hp_dtbr{display: table-row!important;}
+
+/* width
+========================================================================== */
+@for $value from 0 through 20{
+  .hp_wd#{$value*5}p{
+    width:5%*$value!important;
+  }
+}
+
+/* padding
+========================================================================== */
+@for $value from 0 through 20{
+  .hp_p#{$value*5}{
+    padding:5px*$value!important;
+  }
+}
+/*
+padding-top
+*/
+@for $value from 0 through 20{
+  .hp_pt#{$value*5}{
+    padding-top:5px*$value!important;
+  }
+}
+/*
+padding-right
+*/
+@for $value from 0 through 20{
+  .hp_pr#{$value*5}{
+    padding-right:5px*$value!important;
+  }
+}
+/*
+padding-bottom
+*/
+@for $value from 0 through 20{
+  .hp_pb#{$value*5}{
+    padding-bottom:5px*$value!important;
+  }
+}
+/*
+padding-right
+*/
+@for $value from 0 through 20{
+  .hp_pl#{$value*5}{
+    padding-left:5px*$value!important;
+  }
+}
+
+/* margin
+========================================================================== */
+@for $value from 0 through 20{
+  .hp_m#{$value*5}{
+    margin:5px*$value!important;
+  }
+}
+/*
+margin-top
+*/
+@for $value from 1 through 20{
+  .hp_MT#{$value*5}{
+    margin-top:-5px*$value!important;
+  }
+}
+@for $value from 0 through 20{
+  .hp_mt#{$value*5}{
+    margin-top:5px*$value!important;
+  }
+}
+/*
+margin-right
+*/
+@for $value from 1 through 20{
+  .hp_MR#{$value*5}{
+    margin-right:-5px*$value!important;
+  }
+}
+@for $value from 0 through 20{
+  .hp_mr#{$value*5}{
+    margin-right:5px*$value!important;
+  }
+}
+/*
+margin-bottom
+*/
+@for $value from 1 through 20{
+  .hp_MB#{$value*5}{
+    margin-bottom:-5px*$value!important;
+  }
+}
+@for $value from 0 through 20{
+  .hp_mb#{$value*5}{
+    margin-bottom:5px*$value!important;
+  }
+}
+/*
+margin-right
+*/
+@for $value from 1 through 20{
+  .hp_ML#{$value*5}{
+    margin-left:-5px*$value!important;
+  }
+}
+@for $value from 0 through 20{
+  .hp_ml#{$value*5}{
+    margin-left:5px*$value!important;
+  }
+}
+.hp_centering{
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Background
+========================================================================== */
+
+
+/* font
+========================================================================== */
+
+
+/* text-align
+========================================================================== */
+.hp_tal{text-align: left!important;}
+.hp_tac{text-align: center!important;}
+.hp_tar{text-align: right!important;}
+.hp_taj{text-align: justify!important;}
+
+
+/* vertical-align
+========================================================================== */
+.hp_vam{vertical-align: middle !important;}
+
+
+/* PC
+========================================================================== */
+.pc_only{
+  @include MQ(s){
+    display: none !important;
+  }
+  @include MQ(m){
+    display: none !important;
+  }
+}
+
+
+/* SP
+========================================================================== */
+.sp_only{
+  display: none !important;
+  @include MQ(s) {
+    display: block !important;
+  }
+}

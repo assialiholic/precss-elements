@@ -1,0 +1,53 @@
+// -------------------------------------------------------------------
+// Mixins
+// -------------------------------------------------------------------
+
+// MediaQuaries
+// -------------------------------------------------------------------
+@mixin MQ($breakpoint) {
+  @if map-has-key($mediaQueries, $breakpoint) {
+    @media #{inspect(map-get($mediaQueries, $breakpoint))} {
+      @content;
+    }
+} @else {
+    @warn "`#{$breakpoint}` is undefined";
+  }
+}
+
+@mixin contentCentering() {
+  max-width: $contWidth;
+  padding-right: $contSpace;
+  padding-left: $contSpace;
+  margin-right: auto;
+  margin-left: auto;
+
+  @include MQ(m) {
+    max-width: 100%;
+  }
+}
+
+
+// Interaction
+// -------------------------------------------------------------------
+@mixin FHA() {
+  &:focus,
+  &:hover,
+  &:active{
+    @content;
+  }
+}
+
+
+// Modules
+// -------------------------------------------------------------------
+@mixin lastMB0(){
+  > *:last-child {
+    margin-bottom: 0!important;
+  }
+}
+
+@mixin lastMR0(){
+  > *:last-child {
+    margin-right: 0!important;
+  }
+}
