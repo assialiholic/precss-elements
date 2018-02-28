@@ -49,6 +49,11 @@ $alsoSm: false;
     display: $display;
     letter-spacing: normal;
     vertical-align: top;
+
+    > * {
+      padding: 0;
+      margin: 0;
+    }
   }
 }
 
