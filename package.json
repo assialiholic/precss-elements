@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "node-sass": "^4.7.2"
+  },
+  "scripts" :{
+    "sass": "node-sass style.scss style.css --output-style expanded | node-sass style.scss style.css --output-style expanded -w"
+  }
+}
