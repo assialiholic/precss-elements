@@ -272,9 +272,22 @@
   }
 }
 
-
 //
 // ラッパーインクルード用（Mixin Gridのみで使用）
+// @lc {number} PCビュー時のカラム数（省略不可）
+// @lh {numbet} PCビュー時の水平ガター（省略不可）
+// @lv {numbet} PCビュー時の垂直ガター
+// @mc {number} タブレットビュー時のカラム数
+// @mh {number} タブレットビュー時の水平ガター
+// @mv {number} タブレットビュー時の垂直ガター
+// @sc {number} SPビュー時のカラム数
+// @sh {number} SPビュー時の水平ガター
+// @sv {number} SPビュー時の垂直ガター
+// @display {string} レイアウトスタイルの指定（flex or float or inline-block or inline-table）
+// @h-perc {boolean} 水平ガター%化の制御
+// @v-perc {boolean} 垂直ガター%化の制御
+// @childElm {string} カラムを形成したい子要素の指定
+//
 //
 @mixin makeChildColum(
   $lc,
