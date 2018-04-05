@@ -279,13 +279,13 @@
 @mixin makeChildColum(
   $lc,
   $lh,
-  $lv: 0,
-  $mc: 0,
-  $mh: 0,
-  $mv: 0,
-  $sc: 0,
-  $sh: 0,
-  $sv: 0,
+  $lv: false,
+  $mc: false,
+  $mh: false,
+  $mv: false,
+  $sc: false,
+  $sh: false,
+  $sv: false,
   $display: flex,
   $h-perc: true,
   $v-perc: false,
@@ -303,7 +303,6 @@
 
   //%変換
   @if $h-perc{
-    @debug 'h-perc';
     $lh: percentToCont($lh);
     $mh: percentToCont($mh, $bp-md);
     @if $alsoSm {
