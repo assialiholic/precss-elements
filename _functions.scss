@@ -90,7 +90,7 @@
 // @contWidthValue {number} 分母に入る横幅
 //
 @function percentToCont($num, $contWidthValue:$contWidthValue) {
-  @return ($num/$contWidthValue) * 100%;
+  @return percentage($num / $contWidthValue);
 }
 
 

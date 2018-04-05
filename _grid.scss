@@ -1,92 +1,3 @@
-$bp-md: map-get($breakpoints, m);
-$alsoSm: false;
-@if map-has-key($breakpoints, s) {
-  $alsoSm: true;
-  $bp-sm: map-get($breakpoints, s) !global;
-}
-
-/* Grid Mixins
-   ========================================================================== */
-@mixin childCol($col:0, $gutter:0, $mq:true){
-  $width: (100/$col);
-  @if unit($gutter) == '%'{
-    width: roundDecimal(($width - ($gutter * ($col - 1) / $col)), 3);
-    &:nth-of-type(#{$col}n){
-      margin-right: 0;
-    }
-  } @else {
-    $magicNumber: $gutter * ($col - 1) / $col;
-    width: calc(#{$width}% - #{addPxUnit($magicNumber)});
-    &:nth-of-type(#{$col}n){
-      margin-right: 0;
-    }
-  }
-
-  @if $mq {
-    @if $alsoSm {
-      @include MQ(s){
-        width: 100%;
-        margin-right: 0;
-      }
-    } @else {
-      @include MQ(m){
-        width: 100%;
-        margin-right: 0;
-      }
-    }
-  }
-}
-
-@mixin chilidCol__inline($display, $clearFloat:false){
-  display: block;
-  letter-spacing: -.55rem;
-  text-align: left;
-
-  .gr_col{
-    @if $clearFloat{
-      float: none;
-    }
-    display: $display;
-    letter-spacing: normal;
-    vertical-align: top;
-
-    > * {
-      padding: 0;
-      margin: 0;
-    }
-  }
-}
-
-@mixin chilidCol__float(){
-  display: block;
-
-  &::before,
-  &::after {
-    content: ' ';
-    display: table;
-  }
-  &::after {
-    clear: both;
-  }
-
-  .gr_col{
-    float: left;
-    display: block;
-  }
-}
-
-@mixin flex(){
-  display: flex;
-  flex-flow: row wrap;
-  align-content: space-between;
-  align-items: stretch;
-
-  .gr_col{
-    display: block;
-  }
-}
-
-
 /* Grid System
    ========================================================================== */
 .gr_wrapper {
@@ -188,11 +99,11 @@ $alsoSm: false;
   //   残念ながらこの設定はプロジェクト全体で共通となり、モディファイアで一部だけ切り替えることはできません。
   //   そもそもページによってガターのとり方が変わるなどあり得ないでしょう。
   //
-  // $maxColumnNum
+  // $maxColNum
   //   最大のカラム数を指定します。上限は特にありませんが、多ければ多いほどCSSの行数も増えます。
   //   後から増やすことは可能ですが、サイト全体を把握していない限り減らすことは危険です。
   //
-  // $layoutStyle
+  // $display
   //   レイアウトに使用するスタイルを指定します。
   //   これはあくまで標準を指定するためのものであり、いずれを指定しても常に下記のモディファイアで柔軟に上書きすることが可能です。
   //   * gr_wrapper__float
@@ -204,8 +115,9 @@ $alsoSm: false;
 
   $horizPercentageGutter: true;
   $vertPercentageGutter: false;
-  $maxColumnNum: 6;
-  $layoutStyle: 'inline-table'; //float or inline-table or inline-block or flex(flex is beta)
+  $maxColNum: 6;
+  $display: 'inline-table'; //float or inline-table or inline-block or flex(flex is beta)
+  $childElm: '.gr_col';
 
 
   // -------------------------------------------------------------------
@@ -217,212 +129,137 @@ $alsoSm: false;
   // pxと%の切り替え
   // -------------------------------------------------------------------
   @if $horizPercentageGutter{
-    $horizLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), l), h)) !global;
-    $horizMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), h), $bp-md) !global;
+    $lh: percentToCont(map-get(map-get(map-get($gutterValues, default), l), h)) !global;
+    $mh: percentToCont(map-get(map-get(map-get($gutterValues, default), m), h), $bp-md) !global;
     @if $alsoSm {
-      $horizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), h), $bp-sm) !global;
+      $sh: percentToCont(map-get(map-get(map-get($gutterValues, default), s), h), $bp-sm) !global;
     }
   } @else {
-    $horizLgGtr: map-get(map-get(map-get($gutterValues, default), l), h) !global;
-    $horizMdGtr: map-get(map-get(map-get($gutterValues, default), m), h) !global;
-    $horizSmGtr: map-get(map-get(map-get($gutterValues, default), s), h) !global;
+    $lh: map-get(map-get(map-get($gutterValues, default), l), h) !global;
+    $mh: map-get(map-get(map-get($gutterValues, default), m), h) !global;
+    $sh: map-get(map-get(map-get($gutterValues, default), s), h) !global;
   }
   @if $vertPercentageGutter{
-    $vertLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), l), v)) !global;
-    $vertMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), m), v), $bp-md) !global;
+    $lv: percentToCont(map-get(map-get(map-get($gutterValues, default), l), v)) !global;
+    $mv: percentToCont(map-get(map-get(map-get($gutterValues, default), m), v), $bp-md) !global;
     @if $alsoSm {
-      $vertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, default), s), v), $bp-sm) !global;
+      $sv: percentToCont(map-get(map-get(map-get($gutterValues, default), s), v), $bp-sm) !global;
     }
   } @else {
-    $vertLgGtr: map-get(map-get(map-get($gutterValues, default), l), v) !global;
-    $vertMdGtr: map-get(map-get(map-get($gutterValues, default), m), v) !global;
-    $vertSmGtr: map-get(map-get(map-get($gutterValues, default), s), v) !global;
-  }
-
-
-  // 独自mixin
-  // -------------------------------------------------------------------
-  @mixin columnMqLoop($data){
-    $horizLgGtr: map-get($data, horizLgGtr);
-    $horizMdGtr: map-get($data, horizMdGtr);
-    $horizSmGtr: map-get($data, horizSmGtr);
-
-    @for $i from 2 through $maxColumnNum{
-      &#{$wrp}__col#{$i}{
-        .gr_col{
-          @include childCol($i, $horizLgGtr);
-        }
-
-        @for $j from 2 through $maxColumnNum{
-          &#{$wrp}__mdCol#{$j}{
-            @include MQ(m){
-              .gr_col{
-                @include childCol($j, $horizMdGtr, false);
-                margin-right: addPxUnit($horizMdGtr);
-              }
-            }
-
-            @if $alsoSm {
-              @include MQ(s){
-                .gr_col{
-                  width: 100%;
-                  margin-right: 0;
-                }
-              }
-
-              @for $k from 2 through $maxColumnNum {
-                &#{$wrp}__smCol#{$k} {
-                  @include MQ(s) {
-                    .gr_col {
-                      @include childCol($k, $horizSmGtr, false);
-                      margin-right: addPxUnit($horizSmGtr);
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          @if $alsoSm {
-            &#{$wrp}__smCol#{$j} {
-              @include MQ(s) {
-                .gr_col {
-                  @include childCol($j, $horizSmGtr, false);
-                  margin-right: addPxUnit($horizSmGtr);
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  @mixin grCol($data){
-    .gr_col{
-      margin-top: addPxUnit(map_get($data, vertLgGtr));
-      margin-right: addPxUnit(map_get($data, horizLgGtr));
-
-      @include MQ(m){
-        margin-top: addPxUnit(map_get($data, vertMdGtr));
-        margin-right: addPxUnit(map_get($data, horizMdGtr));
-      }
-
-      @if $alsoSm {
-        @include MQ(s) {
-          margin-top: addPxUnit(map_get($data, vertSmGtr));
-          margin-right: addPxUnit(map_get($data, horizSmGtr));
-        }
-      }
-    }
+    $lv: map-get(map-get(map-get($gutterValues, default), l), v) !global;
+    $mv: map-get(map-get(map-get($gutterValues, default), m), v) !global;
+    $sv: map-get(map-get(map-get($gutterValues, default), s), v) !global;
   }
 
 
   // スタイル適用
   // -------------------------------------------------------------------
-  margin-top: - addPxUnit($vertLgGtr);
-  @include MQ(m){
-    margin-top: -#{addPxUnit($vertMdGtr)};
-  }
-
-  @if $alsoSm {
-    @include MQ(s) {
-      margin-top: -#{addPxUnit($vertSmGtr)};
-    }
-  }
-
-  @if $layoutStyle == 'float' {
-    @include chilidCol__float();
-  } @else if $layoutStyle == 'inline-table'{
-    @include chilidCol__inline(inline-table);
-  } @else if $layoutStyle == 'inline-block'{
-    @include chilidCol__inline(inline-block);
-  } @else if $layoutStyle == 'flex'{
-    @include flex();
-  }
+  @include gr_wrapperStyles(
+    $display: $display,
+    $childElm: $childElm,
+    $lh: $lh,
+    $lv: $lv,
+    $mh: $mh,
+    $mv: $mv,
+    $sh: $sh,
+    $sv: $sv
+  );
 
   @if $alsoSm {
     $gtrMap: (
-      'vertLgGtr': $vertLgGtr,
-      'horizLgGtr': $horizLgGtr,
-      'vertMdGtr': $vertMdGtr,
-      'horizMdGtr': $horizMdGtr,
-      'vertSmGtr': $vertSmGtr,
-      'horizSmGtr': $horizSmGtr
+      'wrapperClass': $wrp,
+      'childElm': $childElm,
+      'maxColNum': $maxColNum,
+      'lv': $lv,
+      'lh': $lh,
+      'mv': $mv,
+      'mh': $mh,
+      'sv': $sv,
+      'sh': $sh
     ) !global;
   } @else {
     $gtrMap: (
-      'vertLgGtr': $vertLgGtr,
-      'horizLgGtr': $horizLgGtr,
-      'vertMdGtr': $vertMdGtr,
-      'horizMdGtr': $horizMdGtr
+      'wrapperClass': $wrp,
+      'childElm': $childElm,
+      'maxColNum': $maxColNum,
+      'lv': $lv,
+      'lh': $lh,
+      'mv': $mv,
+      'mh': $mh
     ) !global;
   }
-  @include grCol($gtrMap);
-  @include columnMqLoop($gtrMap);
+  @include gr_setChildsMargin($gtrMap);
+  @include gr_columnMqLoop($gtrMap);
+
 
   // default以外のgutterのモディファイア実装
   // -------------------------------------------------------------------
   @each $size, $viewports in $gutterValues{
     @if $size != 'default'{
       @if $horizPercentageGutter{
-        $thisHorizLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), h)) !global;
-        $thisHorizMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), m), h)) !global;
+        $thislh: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), h)) !global;
+        $thismh: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), m), h)) !global;
         @if $alsoSm {
-          $thisHorizSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), h), $bp-sm) !global;
+          $thissh: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), h), $bp-sm) !global;
         }
       } @else {
-        $thisHorizLgGtr: map-get(map-get(map-get($gutterValues, #{$size}), l), h) !global;
-        $thisHorizMdGtr: map-get(map-get(map-get($gutterValues, #{$size}), m), h) !global;
+        $thislh: map-get(map-get(map-get($gutterValues, #{$size}), l), h) !global;
+        $thismh: map-get(map-get(map-get($gutterValues, #{$size}), m), h) !global;
         @if $alsoSm {
-          $thisHorizSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), h) !global;
+          $thissh: map-get(map-get(map-get($gutterValues, #{$size}), s), h) !global;
         }
       }
       @if $vertPercentageGutter{
-        $thisVertLgGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), v)) !global;
-        $thisVertMdGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), m), v)) !global;
+        $thislv: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), l), v)) !global;
+        $thismv: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), m), v)) !global;
         @if $alsoSm {
-          $thisVertSmGtr: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), v), $bp-sm) !global;
+          $thissv: percentToCont(map-get(map-get(map-get($gutterValues, #{$size}), s), v), $bp-sm) !global;
         }
       } @else {
-        $thisVertLgGtr: map-get(map-get(map-get($gutterValues, #{$size}), l), v) !global;
-        $thisVertMdGtr: map-get(map-get(map-get($gutterValues, #{$size}), m), v) !global;
+        $thislv: map-get(map-get(map-get($gutterValues, #{$size}), l), v) !global;
+        $thismv: map-get(map-get(map-get($gutterValues, #{$size}), m), v) !global;
         @if $alsoSm {
-          $thisVertSmGtr: map-get(map-get(map-get($gutterValues, #{$size}), s), v) !global;
+          $thissv: map-get(map-get(map-get($gutterValues, #{$size}), s), v) !global;
         }
       }
 
       &#{$wrp}__#{$size}{
-        margin-top: -#{addPxUnit($thisVertLgGtr)};
+        margin-top: -#{addPxUnit($thislv)};
         @include MQ(m){
-          margin-top: -#{addPxUnit($thisVertMdGtr)};
+          margin-top: -#{addPxUnit($thismv)};
         }
         @if $alsoSm {
           @include MQ(s){
-            margin-top: -#{addPxUnit($thisVertSmGtr)};
+            margin-top: -#{addPxUnit($thissv)};
           }
         }
 
         @if $alsoSm {
           $thisGtrMap: (
-            'vertLgGtr': $thisVertLgGtr,
-            'horizLgGtr': $thisHorizLgGtr,
-            'vertMdGtr': $thisVertMdGtr,
-            'horizMdGtr': $thisHorizMdGtr,
-            'vertSmGtr': $thisVertSmGtr,
-            'horizSmGtr': $thisHorizSmGtr
+            'wrapperClass': $wrp,
+            'childElm': $childElm,
+            'maxColNum': $maxColNum,
+            'lv': $thislv,
+            'lh': $thislh,
+            'mv': $thismv,
+            'mh': $thismh,
+            'sv': $thissv,
+            'sh': $thissh
           ) !global;
         } @else {
           $thisGtrMap: (
-            'vertLgGtr': $thisVertLgGtr,
-            'horizLgGtr': $thisHorizLgGtr,
-            'vertMdGtr': $thisVertMdGtr,
-            'horizMdGtr': $thisHorizMdGtr
+            'wrapperClass': $wrp,
+            'childElm': $childElm,
+            'maxColNum': $maxColNum,
+            'lv': $thislv,
+            'lh': $thislh,
+            'mv': $thismv,
+            'mh': $thismh
           ) !global;
         }
 
-        @include grCol($thisGtrMap);
-        @include columnMqLoop($thisGtrMap);
+        @include gr_setChildsMargin($thisGtrMap);
+        @include gr_columnMqLoop($thisGtrMap);
       }
     }
   }
@@ -431,18 +268,18 @@ $alsoSm: false;
   // display値変更のモディファイア
   // -------------------------------------------------------------------
   &#{$wrp}__float{
-    @include chilidCol__float();
+    @include gr_display__float($childElm);
   }
 
   &#{$wrp}__inlineTable{
-    @include chilidCol__inline(inline-table, true);
+    @include gr_display__inline(inline-table, $childElm, true);
   }
 
   &#{$wrp}__inlineBlock{
-    @include chilidCol__inline(inline-block, true);
+    @include gr_display__inline(inline-block, $childElm, true);
   }
 
   &#{$wrp}__flex{
-    @include flex();
+    @include gr_display__flex($childElm);
   }
 }

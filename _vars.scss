@@ -22,7 +22,7 @@ $breakpoints: (
 // Text
 // -------------------------------------------------------------------
 $fz: 1.6rem;
-$lh: 1.5;
+$lht: 1.5;
 
 
 // Interaction
@@ -37,3 +37,14 @@ $hoverOpacity: .75;
 //Transition
 //
 $transSpeed: .25s;
+
+
+
+// Grid System
+// -------------------------------------------------------------------
+$bp-md: map-get($breakpoints, m);
+$alsoSm: false;
+@if map-has-key($breakpoints, s) {
+  $alsoSm: true;
+  $bp-sm: map-get($breakpoints, s) !global;
+}
