@@ -1,6 +1,28 @@
 /* Title
    ========================================================================== */
+.bl_pageTtl {
+  $wrp: '.bl_pageTtl';
+  @include lastMB0();
+  text-align: center;
 
+  & #{$wrp}_ttl{
+    display: inline-block;
+    color: $fc-accent;
+    font-weight: bold;
+    @include textStyle(
+      $fz: 4rem,
+      $fz2: $fz-base,
+      $mb: 20px
+    );
+  }
+
+  & #{$wrp}_cap{
+    display: block;
+    color: $fc-base;
+    font-size: $fz-base;
+    font-weight: normal;
+  }
+}
 
 
 /* Text
@@ -13,21 +35,100 @@
 
 /* Other Block
    ========================================================================== */
+.bl_half {
+  $wrp: '.bl_half';
+  display: flex;
+  align-items: center;
+
+  & #{$wrp}_img {
+    flex: 1;
+    margin-right: percentToCont(40);
+  }
+
+  & #{$wrp}_desc {
+    flex: 1;
+  }
+
+  & #{$wrp}_desc_ttl {
+    font-weight: bold;
+    margin-bottom: autoSpace2(30);
+  }
+
+  & #{$wrp}_desc_txt {
+    margin-bottom: autoSpace(30);
+  }
+
+  & #{$wrp}_desc_btn {
+    .el_btn {
+      width: 200px;
+    }
+  }
+
+  &#{$wrp}__rev {
+    & #{$wrp}_img{
+      order: 1;
+      margin-right: 0;
+      margin-left: percentToCont(40);
+    }
+
+    & #{$wrp}_desc{
+      text-align: right;
+    }
+  }
+}
+
 .bl_cardUnit {
   @include makeChildColum(
-    $lc: 5,
-    $lh: 40,
-    $lv: 50,
-    $mc: 3,
-    $mh: 30,
-    $mv: 40,
-    $sc: 2,
-    $sh: 10,
-    $sv: 40
+    $lc: 4,
+    $lh: 20
   );
 }
 
-
-.bl_card{
+.bl_card {
+  $wrp: '.bl_card';
+  @include lastMB0();
   margin-bottom: 20px;
+
+  & #{$wrp}_img{
+  }
+
+  & #{$wrp}_ttl{
+    @include textStyle(
+      $fz: 2rem,
+      $fz2: $fz-base,
+      $mb: 20px
+    );
+    font-weight: bold;
+  }
+
+  & #{$wrp}_txt{
+  }
+}
+
+.bl_bordered {
+  $wrp: '.bl_bordered';
+  @include lastMB0();
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: autoSpace(15) 15px;
+  border: 5px solid $red;
+  border-radius: 5px;
+
+  & #{$wrp}_txt{
+  }
+}
+
+.bl_bgc {
+  $wrp: '.bl_bgc';
+  @include lastMB0();
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: autoSpace(10) 10px;
+  background-color: #555;
+  color: #fff;
+
+  & #{$wrp}_txt{
+  }
 }

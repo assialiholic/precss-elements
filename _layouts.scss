@@ -2,10 +2,12 @@
 // -------------------------------------------------------------------
 .ly_header {
   $wrp: '.ly_header';
-  background-color: #aaa;
+  background-color: $cherryBlossom;
 
   &_inner{
     @include contentCentering();
+    padding-top: 20px;
+    padding-bottom: 20px;
     text-align: center;
   }
 }
@@ -22,10 +24,11 @@
 // -------------------------------------------------------------------
 .ly_footer {
   $wrp: '.ly_footer';
-  background-color: #aaa;
 
   &_inner{
     @include contentCentering();
+    padding-top: 20px;
+    padding-bottom: 20px;
     text-align: center;
   }
 }

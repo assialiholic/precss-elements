@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Lorem, ipsum dolor sit amet consectetur adipisicing elit.">
+  <title>Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="ly_header cf">
+    <div class="ly_header_inner">
+      header here
+    </div>
+    <!-- /.ly_header_inner -->
+  </header>
+  <div class="ly_body">
+    <div class="bl_sect ">
+      <h1 class="bl_pageTtl">
+        <b class="bl_pageTtl_ttl">
+          PRECSS Elements
+        </b>
+        <span class="bl_pageTtl_cap">
+          PRECSS Elementsは「ちょっと足りない」Sassフレームワーク/HTMLボイラープレートです。<br>
+          提唱しているのは「モジュールとコードの設計の仕方」で、必要最低限のモジュールしか用意していません。<br>
+          つまりスクラッチでデザインを再現していくような案件に向いているということです。<br>
+          メインはSassの強力なfunctionとmixinです。
+        </span>
+      </h1>
+    </div>
+    <!-- /.bl_sect -->
+  </div>
+  <!-- /.ly_body -->
+  <div class="hp_bgcCherryBlossom">
+    <section class="ly_body">
+      <div class="bl_sect ">
+        <h2 class="el_sectTtl ">Elements List</h2>
+        <h3 class="el_sectTtl02 ">Buttons</h3>
+        <a href="#" class="el_btn ">Click me</a>
+        <a href="#" class="el_btn el_btn__red">Click me</a>
+        <h3 class="el_sectTtl02 ">Labels</h3>
+        <ul class="bl_inlineLabelList ">
+          <a href="#" class="el_label ">Label</a>
+          <a href="#" class="el_label el_label__red">Label</a>
+        </ul>
+        <h3 class="el_sectTtl02 ">Blocks</h3>
+        <div class="gr_wrapper gr_wrapper__col4 gr_wrapper__narrow hp_mb40">
+          <div class="gr_col">
+            <div class="bl_card ">
+              <figure class="bl_card_img">
+                <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come in .gr_col">
+              </figure>
+              <p class="bl_card_ttl">
+                Anything can come in .gr_col
+              </p>
+              <p class="bl_card_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+            <!-- /.bl_card -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_bordered ">
+              <p class="bl_bordered_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi, culpa deleniti dignissimos dolore et expedita
+                fugit harum illum magni nesciunt odio pariatur perferendis praesentium quidem tempora tempore ut voluptas.
+              </p>
+            </div>
+            <!-- /.bl_bordered -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_bgc ">
+              <p class="bl_bgc_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi, culpa deleniti dignissimos dolore et expedita
+                fugit harum illum magni nesciunt odio pariatur perferendis praesentium quidem tempora tempore ut voluptas.
+              </p>
+            </div>
+            <!-- /.bl_bordered -->
+          </div>
+          <!-- /.gr_col -->
+        </div>
+        <!-- /.gr_wrapper -->
+        <div class="bl_half ">
+          <figure class="bl_half_img">
+            <img src="http://placehold.jp/400x400.png?text=image" alt="Title here">
+          </figure>
+          <div class="bl_half_desc">
+            <p class="bl_half_desc_ttl">
+              Title here
+            </p>
+            <p class="bl_half_desc_txt">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi, culpa deleniti dignissimos dolore et expedita
+              fugit harum illum magni nesciunt odio pariatur perferendis praesentium quidem tempora tempore ut voluptas.
+            </p>
+            <p class="bl_half_desc_btn">
+              <a href="#" class="el_btn el_btn__red">Click me</a>
+            </p>
+          </div>
+          <!-- /.bl_half_desc -->
+        </div>
+        <!-- /.bl_half -->
+        <div class="bl_half bl_half__rev">
+          <figure class="bl_half_img">
+            <img src="http://placehold.jp/400x400.png?text=image" alt="Title here">
+          </figure>
+          <div class="bl_half_desc">
+            <p class="bl_half_desc_ttl">
+              Title here
+            </p>
+            <p class="bl_half_desc_txt">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi, culpa deleniti dignissimos dolore et expedita
+              fugit harum illum magni nesciunt odio pariatur perferendis praesentium quidem tempora tempore ut voluptas.
+            </p>
+            <p class="bl_half_desc_btn">
+              <a href="#" class="el_btn el_btn__red">Click me</a>
+            </p>
+          </div>
+          <!-- /.bl_half_desc -->
+        </div>
+        <!-- /.bl_half -->
+      </div>
+      <!-- /.bl_sect -->
+    </section>
+    <!-- /.ly_body -->
+  </div>
+  <!-- /.hp_bgcCherryBlossom -->
+  <div class="ly_body">
+    <div class="bl_sect ">
+      <h2 class="el_sectTtl ">Mixin Grid</h2>
+      <p>最低限やることはこれだけ。</p>
+      <pre style="padding: 10px; margin: 20px 0; background-color: #efefef; font-size: 14px;">
+.bl_cardUnit {
+  @include makeChildColum(
+    $lc: 4,
+    $lh: 20
+  );
+}</pre>
+      <p>やれることは、これだけ。</p>
+      <pre style="padding: 10px; margin: 20px 0; background-color: #efefef; font-size: 14px;">
+.bl_cardUnit {
+  @include makeChildColum(
+    $lc: 4,                //PCビュー時のカラム数
+    $lh: 20,               //PCビュー時の水平ガター
+    $lv: 50,               //PCビュー時の垂直ガター
+    $mc: 3,                //タブレットビュー時のカラム数
+    $mh: 30,               //タブレットビュー時の水平ガター
+    $mv: 40,               //タブレットビュー時の垂直ガター
+    $sc: 2,                //SPビュー時のカラム数
+    $sh: 10,               //SPビュー時の水平ガター
+    $sv: 40,               //SPビュー時の垂直ガター
+    $display: flex,        //レイアウトスタイルの指定（flex or float or inline-block- or inline-table）
+    $h-perc: true,         //水平ガター%化の可否
+    $v-perc: false,        //垂直ガター%化の可否
+    $childElm: '.bl_card'  //カラムを形成したい子要素の指定（デフォルト：> *）
+  );
+}</pre>
+      <div class="bl_cardUnit ">
+        <div class="bl_card ">
+          <figure class="bl_card_img">
+            <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come here">
+          </figure>
+          <p class="bl_card_ttl">
+            Anything can come here
+          </p>
+          <p class="bl_card_txt">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          </p>
+        </div>
+        <!-- /.bl_card -->
+        <div class="bl_card ">
+          <figure class="bl_card_img">
+            <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come here">
+          </figure>
+          <p class="bl_card_ttl">
+            Anything can come here
+          </p>
+          <p class="bl_card_txt">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          </p>
+        </div>
+        <!-- /.bl_card -->
+        <div class="bl_card ">
+          <figure class="bl_card_img">
+            <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come here">
+          </figure>
+          <p class="bl_card_ttl">
+            Anything can come here
+          </p>
+          <p class="bl_card_txt">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          </p>
+        </div>
+        <!-- /.bl_card -->
+        <div class="bl_card ">
+          <figure class="bl_card_img">
+            <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come here">
+          </figure>
+          <p class="bl_card_ttl">
+            Anything can come here
+          </p>
+          <p class="bl_card_txt">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          </p>
+        </div>
+        <!-- /.bl_card -->
+      </div>
+      <!-- /.bl_cardUnit -->
+    </div>
+    <!-- /.bl_sect -->
+  </div>
+  <!-- /.ly_body -->
+  <div class="hp_bgcCherryBlossom">
+    <section class="ly_body">
+      <div class="bl_sect ">
+        <h2 class="el_sectTtl ">Strict Grid</h2>
+        <p>ガターパターンが厳密に決まっていれば、こちらを使うこともできます。
+          <br>使いそうになければ_grid.scssのインクルードを解除してください。</p>
+        <pre style="padding: 10px; margin: 20px 0; background-color: #efefef; font-size: 14px;">
+# 使い方
+カスタマイズ変数は_grid.scss内に定義しています
+## イニシャライズ
+カラム化したい子要素のラッパーに 'gr_wrapper' クラスを付けます
+## カラムナンバーの選択
+この数字の最大値は $maxColNum 変数に依存しています。
+* gr_wrapper__col2
+* gr_wrapper__col3
+* gr_wrapper__col4 ...
+&lt;div class="gr_wrapper gr_wrapper__col4"&gt;
+## ガターパターンの選択
+_grid.scss内の $gutterValues 変数から希望のガターパターンを選択します。
+これらの名前、及びガター値はカスタマイズ可能で、パターンを増やすことも可能です。
+defaultの場合は特にクラスの追加の必要はありません。
+* gr_wrapper__xNarrow
+* gr_wrapper__narrow
+* gr_wrapper__wide
+* gr_wrapper__xWide
+&lt;div class="gr_wrapper gr_wrapper__col4 gr_wrapper__wide"&gt;
+## メディアクエリ時のカラム数の選択
+mdは_vars.scss内の $breakpoints のmに、smはsに該当します。
+* gr_wrapper__mdCol2
+* gr_wrapper__mdCol3
+* gr_wrapper__smCol2
+* gr_wrapper__smCol3 ...
+&lt;div class="gr_wrapper gr_wrapper__col4 gr_wrapper__wide gr_wrapper__mdCol3 gr_wrapper__smCol2"&gt
+## レイアウトスタイルの選択
+プロジェクト開始時に_grid.scss内の $display変数を定義すると、以後そのスタイルが標準で使用されます。
+ただし状況により他のスタイルを使いたい場合は、モディファイアを追加することで一時的にそれを使用することも可能です。
+* gr_wrapper__float
+* gr_wrapper__inlineTable
+* gr_wrapper__inlineBlock
+* gr_wrapper__flex
+&lt;div class="gr_wrapper gr_wrapper__col4 gr_wrapper__wide gr_wrapper__mdCol3 gr_wrapper__smCol2 gr_wrapper__inlineTable"&gt
+「PCビュー時は4カラム、タブレットビュー時は3カラム、SPビュー時は2カラム、ガターパターンはwideでinline-tableでレイアウトを行う」
+## That's it!
+This is the one ↓</pre>
+        <div class="gr_wrapper gr_wrapper__col4 gr_wrapper__wide gr_wrapper__mdCol3 gr_wrapper__smCol2 gr_wrapper__inlineTable">
+          <div class="gr_col">
+            <div class="bl_card ">
+              <figure class="bl_card_img">
+                <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come in .gr_col">
+              </figure>
+              <p class="bl_card_ttl">
+                Anything can come in .gr_col
+              </p>
+              <p class="bl_card_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+            <!-- /.bl_card -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_card ">
+              <figure class="bl_card_img">
+                <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come in .gr_col">
+              </figure>
+              <p class="bl_card_ttl">
+                Anything can come in .gr_col
+              </p>
+              <p class="bl_card_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+            <!-- /.bl_card -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_bordered ">
+              <p class="bl_bordered_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi, culpa deleniti dignissimos dolore et expedita
+                fugit harum illum magni nesciunt odio pariatur perferendis praesentium quidem tempora tempore ut voluptas.
+              </p>
+            </div>
+            <!-- /.bl_bordered -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_card ">
+              <figure class="bl_card_img">
+                <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come in .gr_col">
+              </figure>
+              <p class="bl_card_ttl">
+                Anything can come in .gr_col
+              </p>
+              <p class="bl_card_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+            <!-- /.bl_card -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_card ">
+              <figure class="bl_card_img">
+                <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come in .gr_col">
+              </figure>
+              <p class="bl_card_ttl">
+                Anything can come in .gr_col
+              </p>
+              <p class="bl_card_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+            <!-- /.bl_card -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_bgc ">
+              <p class="bl_bgc_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi, culpa deleniti dignissimos dolore et expedita
+                fugit harum illum magni nesciunt odio pariatur perferendis praesentium quidem tempora tempore ut voluptas.
+              </p>
+            </div>
+            <!-- /.bl_bordered -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_card ">
+              <figure class="bl_card_img">
+                <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come in .gr_col">
+              </figure>
+              <p class="bl_card_ttl">
+                Anything can come in .gr_col
+              </p>
+              <p class="bl_card_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+            <!-- /.bl_card -->
+          </div>
+          <!-- /.gr_col -->
+          <div class="gr_col">
+            <div class="bl_card ">
+              <figure class="bl_card_img">
+                <img src="http://placehold.jp/400x300.png?text=image" alt="Anything can come in .gr_col">
+              </figure>
+              <p class="bl_card_ttl">
+                Anything can come in .gr_col
+              </p>
+              <p class="bl_card_txt">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
+            </div>
+            <!-- /.bl_card -->
+          </div>
+          <!-- /.gr_col -->
+        </div>
+        <!-- /.gr_wrapper -->
+      </div>
+      <!-- /.bl_sect -->
+    </section>
+    <!-- /.ly_body -->
+  </div>
+  <!-- /.hp_bgcCherryBlossom -->
+  <i class="ly_pageTop js_pageTop">
+    <a href="#">
+      <img src="/assets/img/common/icon-pagetop.svg" alt="">
+    </a>
+  </i>
+  <footer class="ly_footer">
+    <div class="ly_footer_inner">
+      footer here
+    </div>
+    <!-- /.ly_footer_inner -->
+  </footer>
+</body>
+</html>

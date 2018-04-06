@@ -36,8 +36,8 @@
     ),
     narrow:(
       l:(
-        h: 40, //example value
-        v: 30 //example value
+        h: 30, //example value
+        v: 20 //example value
       ),
       m:(
         h: 20, //example value
@@ -50,12 +50,12 @@
     ),
     default:(
       l:(
-        h: 60, //example value
-        v: 50 //example value
+        h: 40, //example value
+        v: 40 //example value
       ),
       m:(
-        h: 40, //example value
-        v: 30 //example value
+        h: 30, //example value
+        v: 20 //example value
       ),
       s:(
         h: 20, //example value
@@ -64,15 +64,15 @@
     ),
     wide:(
       l:(
-        h: 80, //example value
-        v: 70 //example value
+        h: 50, //example value
+        v: 60 //example value
       ),
       m:(
-        h: 60, //example value
-        v: 50 //example value
+        h: 40, //example value
+        v: 30 //example value
       ),
       s:(
-        h: 30, //example value
+        h: 20, //example value
         v: 20 //example value
       )
     ),
@@ -116,7 +116,7 @@
   $horizPercentageGutter: true;
   $vertPercentageGutter: false;
   $maxColNum: 6;
-  $display: 'inline-table'; //float or inline-table or inline-block or flex(flex is beta)
+  $display: 'flex'; //float or inline-table or inline-block or flex(flex is beta)
   $childElm: '.gr_col';
 
 
@@ -154,18 +154,18 @@
 
   // スタイル適用
   // -------------------------------------------------------------------
-  @include gr_wrapperStyles(
-    $display: $display,
-    $childElm: $childElm,
-    $lh: $lh,
-    $lv: $lv,
-    $mh: $mh,
-    $mv: $mv,
-    $sh: $sh,
-    $sv: $sv
-  );
-
   @if $alsoSm {
+    @include gr_wrapperStyles(
+      $display: $display,
+      $childElm: $childElm,
+      $lh: $lh,
+      $lv: $lv,
+      $mh: $mh,
+      $mv: $mv,
+      $sh: $sh,
+      $sv: $sv
+    );
+
     $gtrMap: (
       'wrapperClass': $wrp,
       'childElm': $childElm,
@@ -178,6 +178,15 @@
       'sh': $sh
     ) !global;
   } @else {
+    @include gr_wrapperStyles(
+      $display: $display,
+      $childElm: $childElm,
+      $lh: $lh,
+      $lv: $lv,
+      $mh: $mh,
+      $mv: $mv
+    );
+
     $gtrMap: (
       'wrapperClass': $wrp,
       'childElm': $childElm,

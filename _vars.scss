@@ -8,8 +8,8 @@
 $contSpaceValue: 15;
 $contSpace: $contSpaceValue + px;
 $innerContWidthValue: 1080;
-$contWidthValue: $innerContWidthValue + $contSpaceValue * 2;
-$contWidth: $contWidthValue + px;
+$contWidth: $innerContWidthValue + $contSpaceValue * 2 + px;
+
 
 //
 //Media-query
@@ -19,10 +19,17 @@ $breakpoints: (
   'm': 768
 );
 
+// Color
+// -------------------------------------------------------------------
+$red: #e13626;
+$cherryBlossom: #fff0f0;
+
 // Text
 // -------------------------------------------------------------------
-$fz: 1.6rem;
-$lht: 1.5;
+$fz-base: 1.6rem;
+$lht-base: 1.5;
+$fc-base: #333;
+$fc-accent: $red;
 
 
 // Interaction

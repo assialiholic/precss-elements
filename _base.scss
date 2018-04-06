@@ -133,11 +133,25 @@ html{
 }
 
 body {
+  color: $fc-base;
   font-size: 1.6rem;
+  line-height: $lht-base;
 }
 
 img{
   width: 100%;
   height: auto;
+  max-width: 100%;
   vertical-align: top;
+}
+
+a {
+  transition: $transSpeed;
+
+  > img {
+    transition: $transSpeed;
+    @include FHA(){
+      opacity: $hoverOpacity;
+    }
+  }
 }
