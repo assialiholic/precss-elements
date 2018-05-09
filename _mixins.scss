@@ -2,6 +2,116 @@
 // Mixins
 // -------------------------------------------------------------------
 
+// Sections
+// -------------------------------------------------------------------
+@mixin contentCentering() {
+  max-width: $contWidth;
+  padding-right: $contSpace;
+  padding-left: $contSpace;
+  margin-right: auto;
+  margin-left: auto;
+
+  @include MQ(m) {
+    max-width: 100%;
+  }
+}
+
+
+// Modules
+// -------------------------------------------------------------------
+@mixin textStyle(
+  $fz: null,
+  $fz2: null,
+  $lht: null,
+  $lht2: null,
+  $pt: null,
+  $pr: null,
+  $pb: null,
+  $pl: null,
+  $mt: null,
+  $mr: null,
+  $mb: null,
+  $ml: null
+) {
+  @if $fz == null {
+    $fz: $fz-base;
+  } @else {
+    font-size: $fz;
+  }
+  @if $lht == null {
+    $lht: $lht-base;
+  } @else {
+    line-height: $lht;
+  }
+
+  @if $pt and $pr and $pb and $pl {
+    @if $pt == $pb and $pr == $pl {
+      padding: autoSpace($pt, $fz, $lht) $pr;
+    } @else if $pr == $pl {
+      padding: autoSpace($pt, $fz, $lht) $pr autoSpace($pb, $fz, $lht);
+    }
+  } @else {
+    padding-top: autoSpace($pt, $fz, $lht);
+    padding-right: $pr;
+    padding-bottom: autoSpace($pb, $fz, $lht);
+    padding-left: $pl;
+  }
+
+  //後続要素もテキストの場合は後続要素のhalfLeadingを考慮する
+  @if $fz2 and $mb {
+    @if $lht2 == null {
+      $lht2: $lht-base;
+    }
+    $mb: autoSpace2($mb, $fz, $fz2, $lht, $lht2);
+  } @else {
+    $mb: autoSpace($mb, $fz, $lht);
+  }
+
+  //-halfLeading指定の場合はhalfLeading分をネガティブマージンで打ち消し
+  @if type-of($mt) == string and str-index($mt, -halfLeading){
+    $mt:  - halfLeading($fz, $lht);
+  } @else {
+    $mt: autoSpace($mt, $fz, $lht);
+  }
+
+  @if $mt and $mr and $mb and $ml {
+    @if $mt == $mb and $mr == $ml {
+      margin: $mt $mr;
+    } @else if $mr == $ml {
+      margin: $mt $mr $mb;
+    }
+  } @else {
+    margin-top: $mt;
+    margin-right: $mr;
+    margin-bottom: $mb;
+    margin-left: $ml;
+  }
+}
+
+@mixin lastMB0(){
+  > *:last-child {
+    margin-bottom: 0!important;
+  }
+}
+
+@mixin lastMR0(){
+  > *:last-child {
+    margin-right: 0!important;
+  }
+}
+
+
+// Interactions
+// -------------------------------------------------------------------
+@mixin FHA() {
+  &:focus,
+  &:hover,
+  &:active{
+    @content;
+  }
+}
+
+
 // MediaQuaries
 // -------------------------------------------------------------------
 @mixin MQ($size) {
@@ -18,45 +128,6 @@
   }
 }
 
-@mixin contentCentering() {
-  max-width: $contWidth;
-  padding-right: $contSpace;
-  padding-left: $contSpace;
-  margin-right: auto;
-  margin-left: auto;
-
-  @include MQ(m) {
-    max-width: 100%;
-  }
-}
-
-
-// Interaction
-// -------------------------------------------------------------------
-@mixin FHA() {
-  &:focus,
-  &:hover,
-  &:active{
-    @content;
-  }
-}
-
-
-// Modules
-// -------------------------------------------------------------------
-@mixin lastMB0(){
-  > *:last-child {
-    margin-bottom: 0!important;
-  }
-}
-
-@mixin lastMR0(){
-  > *:last-child {
-    margin-right: 0!important;
-  }
-}
-
-
 
 // Grid System
 // -------------------------------------------------------------------
@@ -71,8 +142,8 @@
   $lv,
   $mh,
   $mv,
-  $sh,
-  $sv
+  $sh: null,
+  $sv: null
 ){
   margin-top: - addPxUnit($lv);
   @include MQ(m){
@@ -97,7 +168,10 @@
 
   @if $childElm == '.gr_col'{
     .gr_col > * {
-      padding: 0;
+      margin: 0;
+    }
+  } @else {
+    #{$childElm} {
       margin: 0;
     }
   } @else {
@@ -157,6 +231,9 @@
 // 子要素のカラム形成に関わるスタイル指定
 //
 @mixin gr_setChildsWidth($col:0, $gutter:0, $mq:true){
+  @if $col == null {
+    $col: 1;
+  }
   $width: (100/$col);
   @if unit($gutter) == '%'{
     width: roundDecimal(($width - ($gutter * ($col - 1) / $col)), 3);
@@ -292,27 +369,27 @@
 @mixin makeChildColum(
   $lc,
   $lh,
-  $lv: false,
-  $mc: false,
-  $mh: false,
-  $mv: false,
-  $sc: false,
-  $sh: false,
-  $sv: false,
+  $lv: null,
+  $mc: null,
+  $mh: null,
+  $mv: null,
+  $sc: null,
+  $sh: null,
+  $sv: null,
   $display: flex,
   $h-perc: true,
   $v-perc: false,
   $childElm: '> *'
 ){
   //mカラム指定が無ければlの値を使う
-  @if $mc==0 { $mc: $lc}
+  @if $mc == null { $mc: $lc }
   //lvに指定が無ければlhの値を使う
-  @if $lv==0 { $lv: $lh}
+  @if $lv == null { $lv: $lh }
   //s,mに指定が無ければlの値を使う
-  @if $mh==0 { $mh: $lh}
-  @if $mv==0 { $mv: $lv}
-  @if $sh==0 { $sh: $lh}
-  @if $sv==0 { $sv: $lv}
+  @if $mh == null { $mh: $lh }
+  @if $mv == null { $mv: $lv }
+  @if $sh == null { $sh: $lh }
+  @if $sv == null { $sv: $lv }
 
   //%変換
   @if $h-perc{
@@ -384,6 +461,10 @@
         } @else {
           width: 100%;
           margin-right: 0;
+          &:nth-of-type(#{$lc}n),
+          &:nth-of-type(#{$mc}n){
+            margin-right: 0;
+          }
         }
       }
     }
