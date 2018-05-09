@@ -174,11 +174,6 @@
     #{$childElm} {
       margin: 0;
     }
-  } @else {
-    #{$childElm}{
-      padding: 0;
-      margin: 0;
-    }
   }
 }
 
