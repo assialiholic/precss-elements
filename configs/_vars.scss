@@ -2,9 +2,14 @@
 // Variables
 // -------------------------------------------------------------------
 
+// System
+// -------------------------------------------------------------------
+$assetsRoot: '/assets';
+$imgRoot: $assetsRoot + '/img';
+
+
 // General
 // -------------------------------------------------------------------
-
 $contSpaceValue: 15;
 $contSpace: $contSpaceValue + px;
 $innerContWidthValue: 1080;
